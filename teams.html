@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Teams</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="static/styles.css">
+</head>
+<body>
+    <h1>Footy Fanatic Soccer News</h1>
+
+    <div class="navbar">
+        {% if session.get('signed_in') %}
+            <!-- User is signed in: All links enabled -->
+            <a href="{{ url_for('home') }}">Home</a>
+            <a href="{{ url_for('news') }}">News</a>
+            <a href="{{ url_for('matches') }}">Matches</a>
+            <a href="{{ url_for('teams') }}">Teams</a>
+            <a href="{{ url_for('scores') }}">Scores</a>
+            <a href="{{ url_for('topscorers') }}">Top Scorers</a>
+            <a href="{{ url_for('standings') }}">Standings</a>
+
+        {% else %}
+            <!-- User not signed in: All links disabled -->
+            <a class="disabled-link">Home</a>
+            <a class="disabled-link">News</a>
+            <a class="disabled-link">Matches</a>
+            <a class="disabled-link">Teams</a>
+            <a class="disabled-link">Scores</a>
+            <a class="disabled-link">Top Scorers</a>
+            <a class="disabled-link">Standings</a>
+
+        {% endif %}
+    
+        <!-- Sign in/out links -->
+        <div class="sign-in-out">
+            {% if session.get('signed_in') %}
+                <a href="{{ url_for('signout') }}">Sign Out</a>
+            {% else %}
+                <a href="{{ url_for('signin') }}">Sign In</a>
+                <a href="{{ url_for('register') }}">Register</a>
+            {% endif %}
+        </div>
+    </div>
+
+    <h1>Teams by League</h1>
+    {% for league, teams in leagues.items() %}
+    <div class="league-section">
+        <h2>{{ league }}</h2>
+        <div class="team-list">
+            {% for id, team in teams.items() %}
+            <div class="team-card">
+                <img src="{{ team.logo }}" class="team-logo-large" alt="{{ team.name }}">
+                <h3><a href="{{ url_for('team_profile', team_id=id) }}">{{ team.name }}</a></h3>
+                <p>{{ team.stadium }}</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+   {% endfor %}
+   
+    <div class="back-home">
+        <a href="{{ url_for('home') }}">← Back to Home</a>
+    </div>
+</body>
+</html>

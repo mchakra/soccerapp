@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Scores</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="static/styles.css">
+</head>
+<body>
+    <h1>Footy Fanatic Soccer News</h1>
+
+    <div class="navbar">
+        {% if session.get('signed_in') %}
+            <!-- User is signed in: All links enabled -->
+            <a href="{{ url_for('home') }}">Home</a>
+            <a href="{{ url_for('news') }}">News</a>
+            <a href="{{ url_for('matches') }}">Matches</a>
+            <a href="{{ url_for('teams') }}">Teams</a>
+            <a href="{{ url_for('scores') }}">Scores</a>
+            <a href="{{ url_for('topscorers') }}">Top Scorers</a>
+            <a href="{{ url_for('standings') }}">Standings</a>
+   
+        {% else %}
+            <!-- User not signed in: All links disabled -->
+            <a class="disabled-link">Home</a>
+            <a class="disabled-link">News</a>
+            <a class="disabled-link">Matches</a>
+            <a class="disabled-link">Teams</a>
+            <a class="disabled-link">Scores</a>
+            <a class="disabled-link">Top Scorers</a>
+            <a class="disabled-link">Standings</a>
+        
+        {% endif %}
+    
+        <!-- Sign in/out links -->
+        <div class="sign-in-out">
+            {% if session.get('signed_in') %}
+                <a href="{{ url_for('signout') }}">Sign Out</a>
+            {% else %}
+                <a href="{{ url_for('signin') }}">Sign In</a>
+                <a href="{{ url_for('register') }}">Register</a>
+
+            {% endif %}
+        </div>
+    </div>
+
+    <h1>Final Scores – Today</h1>
+
+    <div class="match-container">
+        {% if match_groups %}
+            {% for league, matches in match_groups.items() %}
+            <div class="league-section">
+                <h2>{{ league }}</h2>
+                {% for match in matches %}
+                <div class="match-box">
+                    <div class="teams">
+                        <div class="team">
+                            <img src="{{ match.home_logo }}" alt="{{ match.home }}" class="team-logo">
+                            <span>{{ match.home }}</span>
+                        </div>
+                        <div class="score">
+                            <strong>{{ match.score }}</strong>
+                            <div class="match-time">FT</div>
+                        </div>
+                        <div class="team">
+                            <img src="{{ match.away_logo }}" alt="{{ match.away }}" class="team-logo">
+                            <span>{{ match.away }}</span>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% endfor %}
+        {% else %}
+            <div class="error-message">
+                ❗ Sorry, Scores data is not available at the moment. Please try again later.
+            </div>
+        {% endif %}
+        </div>
+
+        <div class="back-home">
+            <a href="{{ url_for('home') }}">← Back to Home</a>
+        </div>
+</body>
+</html>

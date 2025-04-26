@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>All Soccer News</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+
+    <!-- Navbar -->
+
+    <div class="navbar">
+        {% if session.get('signed_in') %}
+            <!-- User is signed in: All links enabled -->
+            <a href="{{ url_for('home') }}">Home</a>
+            <a href="{{ url_for('news') }}">News</a>
+            <a href="{{ url_for('matches') }}">Matches</a>
+            <a href="{{ url_for('teams') }}">Teams</a>
+            <a href="{{ url_for('scores') }}">Scores</a>
+            <a href="{{ url_for('topscorers') }}">Top Scorers</a>
+            <a href="{{ url_for('standings') }}">Standings</a>
+       
+        {% else %}
+            <!-- User not signed in: All links disabled -->
+            <a class="disabled-link">Home</a>
+            <a class="disabled-link">News</a>
+            <a class="disabled-link">Matches</a>
+            <a class="disabled-link">Teams</a>
+            <a class="disabled-link">Scores</a>
+            <a class="disabled-link">Top Scorers</a>
+            <a class="disabled-link">Standings</a>
+       
+        {% endif %}
+    
+        <!-- Sign in/out links -->
+        <div class="sign-in-out">
+            {% if session.get('signed_in') %}
+                <a href="{{ url_for('signout') }}">Sign Out</a>
+            {% else %}
+                <a href="{{ url_for('signin') }}">Sign In</a>
+                <a href="{{ url_for('register') }}">Register</a>
+
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Page Heading -->
+    <h1 style="text-align: center; margin-top: 20px;">Soccer News</h1>
+
+    <!-- News Cards -->
+    <div class="container">
+        <div class="news-box">
+            <img src="https://www.pngall.com/wp-content/uploads/15/Arsenal-Logo-PNG-Cutout.png" alt="Arsenal">
+            <h2>Arsenal Ratings: Calafiori Saves the Day, Lewis-Skelly Sees Red</h2>
+            <p>Arsenal kept up their chase of Premier League leaders Liverpool after a 1-0 win over Wolves where both teams saw red cards.</p>
+            <a href="{{ url_for('article', id=1) }}">Read More</a>
+        </div>
+
+        <div class="news-box">
+            <img src="https://a57.foxsports.com/statics.foxsports.com/www.foxsports.com/content/uploads/2025/02/647/364/bellingham-goal.jpg?ve=1&tl=1" alt="Bellingham">
+            <h2>Champions League: 10-man AC Milan Draw</h2>
+            <p>Milan were forced to settle for a 1-1 draw against Feyenoord after a red card early in the second half.</p>
+            <a href="{{ url_for('article', id=2) }}">Read More</a>
+        </div>
+
+        <div class="news-box">
+            <img src="https://a57.foxsports.com/statics.foxsports.com/www.foxsports.com/content/uploads/2025/02/647/364/poch1.jpg?ve=1&tl=1" alt="Pochettino">
+            <h2>USMNT Coach Pochettino Hits the Road</h2>
+            <p>Coach Mauricio Pochettino travels extensively as the USMNT prepares for its next challenges.</p>
+            <a href="{{ url_for('article', id=3) }}">Read More</a>
+        </div>
+
+        <div class="news-box">
+            <img src="https://a57.foxsports.com/statics.foxsports.com/www.foxsports.com/content/uploads/2025/01/647/364/b9127ff2-messi1.jpg?ve=1&tl=1" alt="Messi">
+            <h2>Why Mexico Fans are Upset with Lionel Messi</h2>
+            <p>Messi is back in action, but some fans in Mexico aren't happy about recent incidents.</p>
+            <a href="{{ url_for('article', id=4) }}">Read More</a>
+        </div>
+
+        <div class="news-box">
+            <img src="https://a57.foxsports.com/statics.foxsports.com/www.foxsports.com/content/uploads/2025/02/647/364/pulisic1.jpg?ve=1&tl=1" alt="Pulisic">
+            <h2>Champions League: Milan Eliminated, Club Brugge Shocker</h2>
+            <p>AC Milan are knocked out of the Champions League after a tough 1-1 tie and a shock loss for Brugge.</p>
+            <a href="{{ url_for('article', id=5) }}">Read More</a>
+        </div>
+
+        <div class="news-box">
+            <img src="https://www.theguardian.com/football/live/2025/mar/02/manchester-united-v-fulham-fa-cup-fifth-round-live#img-1" alt="Man United vs Fulham">
+            <h2>Manchester United Say Goodbye to FA Cup</h2>
+            <p>Fulham eliminates Manchester United in the FA Cup 5th round with a surprise win at Old Trafford.</p>
+            <a href="{{ url_for('article', id=6) }}">Read More</a>
+        </div>
+
+        <div class="news-box">
+            <img src="https://resources.premierleague.pulselive.com/photo-resources/2025/04/20/a45444d9-d65b-44c4-ab56-3606e6a96e67/When-can-Liverpool-win-title-v3.jpg" alt="Liverpool Title">
+            <h2>Real Madrid Eliminated from UCL by Arsenal</h2>
+            <p>Real Madrid lose 5-1 on aggregate to Arsenal, ending their Champions League hopes.</p>
+            <a href="{{ url_for('article', id=7) }}">Read More</a>
+        </div>
+
+        <div class="news-box">
+            <img src="https://images2.minutemediacdn.com/image/upload/c_crop,w_4000,h_2666,x_0,y_0/c_fill,w_620,ar_3:2,f_auto,q_auto,g_auto/images/voltaxMediaLibrary/mmsport/real_madrid_cf_on_si/01js06tyt7wdn7chdyae.jpg" alt="Real Madrid">
+            <h2>Real Madrid Face End of an Era After UCL Loss</h2>
+            <p>Real Madrid's dominance fades as they bow out of the UCL following a poor season finale.</p>
+            <a href="{{ url_for('article', id=8) }}">Read More</a>
+        </div>
+    </div>
+    
+    <div class="back-home">
+        <a href="{{ url_for('home') }}">← Back to Home</a>
+    </div>
+
+</body>
+</html>

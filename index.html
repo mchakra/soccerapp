@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Footy Fanatic - Home</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <!-- Swiper CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+</head>
+<body>
+    <h1>Welcome to Footy Fanatic</h1>
+
+    
+    <div class="navbar">
+        {% if session.get('signed_in') %}
+            <!-- User is signed in: All links enabled -->
+            <a href="{{ url_for('home') }}">Home</a>
+            <a href="{{ url_for('news') }}">News</a>
+            <a href="{{ url_for('matches') }}">Matches</a>
+            <a href="{{ url_for('teams') }}">Teams</a>
+            <a href="{{ url_for('scores') }}">Scores</a>
+            <a href="{{ url_for('topscorers') }}">Top Scorers</a>
+            <a href="{{ url_for('standings') }}">Standings</a>
+        {% else %}
+            <!-- User not signed in: All links disabled -->
+            <a class="disabled-link">Home</a>
+            <a class="disabled-link">News</a>
+            <a class="disabled-link">Matches</a>
+            <a class="disabled-link">Teams</a>
+            <a class="disabled-link">Scores</a>
+            <a class="disabled-link">Top Scorers</a>
+            <a class="disabled-link">Standings</a>
+        {% endif %}
+    
+        <!-- Sign in/out links -->
+        <div class="sign-in-out">
+            {% if session.get('signed_in') %}
+                <a href="{{ url_for('signout') }}">Sign Out</a>
+            {% else %}
+                <a href="{{ url_for('signin') }}">Sign In</a>
+                <a href="{{ url_for('register') }}">Register</a>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- NEWS CAROUSEL -->
+    <h2>Top Headlines</h2>
+
+    {% if session.get('signed_in') %}
+        <h3 style="text-align: center; margin-top: 20px;">Welcome, {{ session['username'] }}!</h3>
+    {% endif %}
+
+    <div class="swiper news-swiper">
+        <div class="swiper-wrapper">
+          {% for article in news %}
+          <div class="swiper-slide">
+            <div class="news-box">
+                {% if session.get('signed_in') %}
+                    <a href="{{ url_for('article', id=article.id) }}" class="news-link">
+                        <img src="{{ article.image }}" alt="{{ article.title }}">
+                    </a>
+                {% else %}
+                    <img src="{{ article.image }}" alt="{{ article.title }}" class="news-link">
+                {% endif %}
+                <div class="news-text">
+                    <h3>{{ article.title }}</h3>
+                </div>
+            </div>            
+          </div>
+          {% endfor %}
+    </div>
+
+
+    <!-- Swiper controls -->
+    <div class="swiper-pagination"></div>
+    <div class="swiper-button-next"></div>
+    <div class="swiper-button-prev"></div>
+    </div>
+    
+    <a href="{{ url_for('news') }}" class="view-all-link">→ View All News</a>
+
+        <!-- FEATURED TEAMS -->
+        <h2>Featured Teams</h2>
+        <div class="team-list">
+            {% for id, team in teams.items() %}
+            <div class="team-card">
+                <img src="{{ team.logo }}" class="team-logo-large" alt="{{ team.name }}">
+                <h3>
+                    <a href="{{ url_for('team_profile', team_id=id) }}">{{ team.name }}</a>
+                </h3>
+                <p>{{ team.stadium }}</p>
+            </div>
+            {% endfor %}
+        </div>
+    
+        <a href="{{ url_for('teams') }}" class="view-all-link">→ Explore All Teams</a>
+
+    <!-- MATCHES CAROUSEL -->
+    <h2>Match Highlights</h2>
+    <div class="swiper match-swiper">
+    <div class="swiper-wrapper">
+        {% for league, group in matches.items() %}
+        {% for match in group[:1] %}
+        <div class="swiper-slide">
+            <div class="match-box">
+            <p><strong>{{ match.home }}</strong> {{ match.score or "vs" }} <strong>{{ match.away }}</strong></p>
+            <p><small>
+                {% if match.status == '1H' or match.status == '2H' or match.status == 'LIVE' %}
+                    🟢 Live
+                {% else %}
+                    🕒 {{ match.time }}
+                {% endif %}
+            </small></p>
+            </div>
+        </div>
+        {% endfor %}
+        {% endfor %}
+    </div>
+    </div>
+    <a href="{{ url_for('matches') }}" class="view-all-link">→ View All Matches</a>
+
+    <!-- Swiper JS -->
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <script>
+    // News carousel
+    new Swiper('.news-swiper', {
+        slidesPerView: 1,
+        spaceBetween: 20,
+        loop: true,
+        pagination: { el: '.swiper-pagination', clickable: true },
+        navigation: { nextEl: '.swiper-button-next', prevEl: '.swiper-button-prev' },
+    });
+
+    // Matches carousel
+    new Swiper('.match-swiper', {
+        slidesPerView: 2,
+        spaceBetween: 20,
+        loop: true,
+        autoplay: { delay: 4000 },
+    });
+    </script>
+
+</body>
+</html>

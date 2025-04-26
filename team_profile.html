@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ team.name }} - Team Profile</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+
+
+    <div class="navbar">
+        {% if session.get('signed_in') %}
+            <!-- User is signed in: All links enabled -->
+            <a href="{{ url_for('home') }}">Home</a>
+            <a href="{{ url_for('news') }}">News</a>
+            <a href="{{ url_for('matches') }}">Matches</a>
+            <a href="{{ url_for('teams') }}">Teams</a>
+            <a href="{{ url_for('scores') }}">Scores</a>
+            <a href="{{ url_for('topscorers') }}">Top Scorers</a>
+            <a href="{{ url_for('standings') }}">Standings</a>
+
+        {% else %}
+            <!-- User not signed in: All links disabled -->
+            <a class="disabled-link">Home</a>
+            <a class="disabled-link">News</a>
+            <a class="disabled-link">Matches</a>
+            <a class="disabled-link">Teams</a>
+            <a class="disabled-link">Scores</a>
+            <a class="disabled-link">Top Scorers</a>
+            <a class="disabled-link">Standings</a>
+    
+        {% endif %}
+    
+        <!-- Sign in/out links -->
+        <div class="sign-in-out">
+            {% if session.get('signed_in') %}
+                <a href="{{ url_for('signout') }}">Sign Out</a>
+            {% else %}
+                <a href="{{ url_for('signin') }}">Sign In</a>
+                <a href="{{ url_for('register') }}">Register</a>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="team-portfolio">
+        <img src="{{ team.logo }}" alt="{{ team.name }}" class="team-logo-large">
+        <h1>{{ team.name }}</h1>
+
+        {% if team.get('full_name') %}
+            <p><strong>Full Name:</strong> {{ team.full_name }}</p>
+        {% endif %}
+        {% if team.get('founded') %}
+            <p><strong>Founded:</strong> {{ team.founded }}</p>
+        {% endif %}
+        {% if team.get('stadium') %}
+            <p><strong>Stadium:</strong> {{ team.stadium }}</p>
+        {% endif %}
+        {% if team.get('capacity') %}
+            <p><strong>Capacity:</strong> {{ team.capacity }}</p>
+        {% endif %}
+        {% if team.get('manager') %}
+            <p><strong>Manager:</strong> {{ team.manager }}</p>
+        {% endif %}
+        {% if team.get('league') %}
+            <p><strong>League:</strong> {{ team.league }}</p>
+        {% endif %}
+
+        {% if team.get('description') %}
+            <p>{{ team.description }}</p>
+        {% endif %}
+
+        {% if team.get('wiki') %}
+            <p><a href="{{ team.wiki }}" target="_blank">More on Wikipedia</a></p>
+        {% endif %}
+
+        <div class="back-home">
+            <a href="{{ url_for('teams') }}">← Back to Teams</a>
+        </div>
+    </div>
+</body>
+</html>

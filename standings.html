@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Teams</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="static/styles.css">
+</head>
+<body>
+
+    <div class="navbar">
+        {% if session.get('signed_in') %}
+            <!-- User is signed in: All links enabled -->
+            <a href="{{ url_for('home') }}">Home</a>
+            <a href="{{ url_for('news') }}">News</a>
+            <a href="{{ url_for('matches') }}">Matches</a>
+            <a href="{{ url_for('teams') }}">Teams</a>
+            <a href="{{ url_for('scores') }}">Scores</a>
+            <a href="{{ url_for('topscorers') }}">Top Scorers</a>
+            <a href="{{ url_for('standings') }}">Standings</a>
+       
+        {% else %}
+            <!-- User not signed in: All links disabled -->
+            <a class="disabled-link">Home</a>
+            <a class="disabled-link">News</a>
+            <a class="disabled-link">Matches</a>
+            <a class="disabled-link">Teams</a>
+            <a class="disabled-link">Scores</a>
+            <a class="disabled-link">Top Scorers</a>
+            <a class="disabled-link">Standings</a>
+
+        {% endif %}
+    
+        <!-- Sign in/out links -->
+        <div class="sign-in-out">
+            {% if session.get('signed_in') %}
+                <a href="{{ url_for('signout') }}">Sign Out</a>
+            {% else %}
+                <a href="{{ url_for('signin') }}">Sign In</a>
+                <a href="{{ url_for('register') }}">Register</a>
+            {% endif %}
+        </div>
+    </div>
+
+    <h1>Premier League Standings</h1>
+
+    {% if table %}
+    <!-- Display your standings table here -->
+
+        <table border="1">
+            <tr>
+                <th>Rank</th>
+                <th>Team</th>
+                <th>Points</th>
+                <th>Wins</th>
+                <th>Losses</th>
+                <th>Draws</th>
+            </tr>
+        
+            {% for team in table %}
+            <tr>
+                <td>{{ team.rank }}</td>
+                <td>
+                    <img src="{{ team.team.logo }}" width="20">
+                    {{ team.team.name }}
+                </td>
+                <td>{{ team.points }}</td>
+                <td>{{ team.all.win }}</td>
+                <td>{{ team.all.lose }}</td>
+                <td>{{ team.all.draw }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+
+    {% else %}
+    <div class="error-message">
+        ❗ Sorry, Standings data is not available at the moment. Please try again later.
+    </div>
+    {% endif %}
+
+    
+   
+    <div class="back-home">
+        <a href="{{ url_for('home') }}">← Back to Home</a>
+    </div>
+</body>
+</html>
